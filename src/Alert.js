@@ -51,8 +51,8 @@ class InfoAlert extends Alert {
       });
     } else {
       return this.setState({
-        query: suggestion,
-        suggestions: [],
+        query: value,
+        suggestions,
         showSuggestions: false,
         infoText: ''
       });
