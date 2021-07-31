@@ -61,27 +61,26 @@ export const getEvents = async () => {
   if (window.location.href.startsWith('http://localhost')) {
     return mockData;
   }
-  console.log("On line: " + navigator.onLine);
-  // if (true) {
-  //   const data = localStorage.getItem("lastEvents");
-  //   NProgress.done();
-  //   return data ? JSON.parse(data).events : [];
-  // }
-  return [];
-  // const token = await getAccessToken();
 
-  // if (token) {
-  //   removeQuery();
-  //   const url = 'https://q5a5kpwrdb.execute-api.eu-central-1.amazonaws.com/dev/api/get-events' + '/' + token;
-  //   const result = await axios.get(url);
-  //   if (result.data) {
-  //     var locations = extractLocations(result.data.events);
-  //     localStorage.setItem("lastEvents", JSON.stringify(result.data));
-  //     localStorage.setItem("locations", JSON.stringify(locations));
-  //   }
-  //   NProgress.done();
-  //   return result.data.events;
-  // }
+  if (!navigator.onLine) {
+    const data = localStorage.getItem("lastEvents");
+    NProgress.done();
+    return data ? JSON.parse(data).events : [];
+  }
+  const token = await getAccessToken();
+
+  if (token) {
+    removeQuery();
+    const url = 'https://q5a5kpwrdb.execute-api.eu-central-1.amazonaws.com/dev/api/get-events' + '/' + token;
+    const result = await axios.get(url);
+    if (result.data) {
+      var locations = extractLocations(result.data.events);
+      localStorage.setItem("lastEvents", JSON.stringify(result.data));
+      localStorage.setItem("locations", JSON.stringify(locations));
+    }
+    NProgress.done();
+    return result.data.events;
+  }
 };
 
 const getToken = async (code) => {
