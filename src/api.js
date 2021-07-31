@@ -62,11 +62,12 @@ export const getEvents = async () => {
     return mockData;
   }
   console.log("On line: " + navigator.onLine);
-  if (true) {
-    const data = localStorage.getItem("lastEvents");
-    NProgress.done();
-    return data ? JSON.parse(data).events : [];
-  }
+  // if (true) {
+  //   const data = localStorage.getItem("lastEvents");
+  //   NProgress.done();
+  //   return data ? JSON.parse(data).events : [];
+  // }
+  return [];
   // const token = await getAccessToken();
 
   // if (token) {
