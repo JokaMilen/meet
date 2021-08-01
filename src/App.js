@@ -5,13 +5,15 @@ import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
 import { getEvents, extractLocations } from './api';
 import './nprogress.css';
+import { OfflineAlert } from './Alert';
 
 class App extends Component {
   state = {
     events: [],
     locations: [],
     location: "all",
-    numberOfEvents: 32
+    numberOfEvents: 32,
+    offlineAlertText: ''
   }
 
   updateEvents = (location) => {
@@ -38,6 +40,14 @@ class App extends Component {
 
   componentDidMount() {
     this.mounted = true;
+
+    var online = navigator.onLine;
+    if (online === false) {
+      this.setState({
+        offlineAlertText: "No internet, list is not up to date"
+      });
+    }
+
     getEvents().then((events) => {
       if (this.mounted) {
         this.setState({
@@ -58,6 +68,7 @@ class App extends Component {
         <CitySearch locations={this.state.locations} updateEvents={this.updateEvents} />
         <NumberOfEvents numberOfEvents={this.state.numberOfEvents} updateNumberOfEvents={this.updateNumberOfEvents} />
         <EventList events={this.state.events} />
+        <OfflineAlert text={this.state.offlineAlertText} />
       </div>
     );
   }
