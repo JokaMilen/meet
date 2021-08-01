@@ -3,9 +3,10 @@ import './App.css';
 import EventList from './EventList';
 import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
-import { getEvents, extractLocations } from './api';
+import { getEvents, extractLocations, checkToken, getAccessToken } from './api';
 import './nprogress.css';
 import { OfflineAlert } from './Alert';
+import WelcomeScreen from './WelcomeScreen';
 
 class App extends Component {
   state = {
@@ -13,7 +14,8 @@ class App extends Component {
     locations: [],
     location: "all",
     numberOfEvents: 32,
-    offlineAlertText: ''
+    offlineAlertText: '',
+    showWelcomeScreen: undefined
   }
 
   updateEvents = (location) => {
@@ -38,24 +40,32 @@ class App extends Component {
     this.updateEvents(this.state.location);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.mounted = true;
+    const accessToken = localStorage.getItem('access_token');
+    const isTokenValid = (await checkToken(accessToken)).error ? false :
+      true;
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get("code");
+    this.setState({ showWelcomeScreen: !(code || isTokenValid) });
 
-    var online = navigator.onLine;
-    if (online === false) {
-      this.setState({
-        offlineAlertText: "No internet, list is not up to date"
-      });
-    }
 
-    getEvents().then((events) => {
-      if (this.mounted) {
+    if ((code || isTokenValid) && this.mounted) {
+      var online = navigator.onLine;
+      if (online === false) {
         this.setState({
-          events,
-          locations: extractLocations(events)
+          offlineAlertText: "No internet, list is not up to date"
         });
       }
-    });
+      getEvents().then((events) => {
+        if (this.mounted) {
+          this.setState({
+            events,
+            locations: extractLocations(events)
+          });
+        }
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -63,13 +73,16 @@ class App extends Component {
   }
 
   render() {
+    if (this.state.showWelcomeScreen === undefined) return <div
+      className="App" />
     return (
       <div className="App">
         <CitySearch locations={this.state.locations} updateEvents={this.updateEvents} />
         <NumberOfEvents numberOfEvents={this.state.numberOfEvents} updateNumberOfEvents={this.updateNumberOfEvents} />
         <OfflineAlert text={this.state.offlineAlertText} />
         <EventList events={this.state.events} />
-
+        <WelcomeScreen showWelcomeScreen={this.state.showWelcomeScreen}
+          getAccessToken={() => { getAccessToken() }} />
       </div>
     );
   }
