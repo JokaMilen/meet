@@ -42,29 +42,36 @@ class CitySearch extends Component {
   render() {
     return (
       <div className="CitySearch">
-        <input
-          type="text"
-          className="city"
-          value={this.state.query}
-          onChange={this.handleInputChanged}
-          onFocus={() => { this.setState({ showSuggestions: true }) }}
-          onBlur={() => { this.setState({ showSuggestions: false }) }}
-        />
-        <InfoAlert text={this.state.infoText} />
-        <ul className="suggestions" style={this.state.showSuggestions ? {} : { display: 'none' }}>
-          {this.state.suggestions.map((suggestion) => (
+        <section>
+          <label htmlFor="search" className="inputLabel">Select city:</label>
+          <input
+            id="search"
+            type="text"
+            className="city"
+            value={this.state.query}
+            onChange={this.handleInputChanged}
+            onFocus={() => { this.setState({ showSuggestions: true }) }}
+            onBlur={() => { this.setState({ showSuggestions: false }) }}
+            autoComplete="off"
+          />
+
+          <InfoAlert text={this.state.infoText} />
+
+          <ul className="suggestions" style={this.state.showSuggestions ? {} : { display: 'none' }}>
+            {this.state.suggestions.map((suggestion) => (
+              <li
+                key={suggestion}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => this.handleItemClicked(suggestion)}
+              >{suggestion}</li>
+            ))}
             <li
-              key={suggestion}
               onMouseDown={(e) => e.preventDefault()}
-              onClick={() => this.handleItemClicked(suggestion)}
-            >{suggestion}</li>
-          ))}
-          <li
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => this.handleItemClicked("all")}>
-            <b>See all cities</b>
-          </li>
-        </ul>
+              onClick={() => this.handleItemClicked("all")}>
+              <b>See all cities</b>
+            </li>
+          </ul>
+        </section>
       </div>
     );
   }

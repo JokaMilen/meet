@@ -25,8 +25,9 @@ class App extends Component {
       const locationEvents = (location === 'all') ?
         events :
         events.filter((event) => event.location === location);
+      var numberOfEvent = this.state.numberOfEvents < 1 ? 1 : this.state.numberOfEvents > 32 ? 32 : this.state.numberOfEvents;
       this.setState({
-        events: locationEvents.slice(0, this.state.numberOfEvents)
+        events: locationEvents.slice(0, numberOfEvent)
       });
     });
 

@@ -38,6 +38,14 @@ input[type="number"] {
   margin-right: 20px;
 }
 
+label, input {
+  display: block;
+}
+
+.inputLabel {
+  text-align: left;
+}
+
 .city {
   width: 250px;
 }
@@ -46,7 +54,7 @@ input[type="number"] {
   display: flex;
   flex-direction: row;
   flex-basis: 300px;
-  max-width: 500px;
+  max-width: 600px;
   margin: auto;
   position: relative;
 }
@@ -57,7 +65,7 @@ input[type="number"] {
   z-index: 2;
   align-self: center;
   margin: 0;
-  top: 43px;
+  /* top: 43px; */
   font-size: 14px;
   box-shadow: 10px 10px 16px -12px rgba(0, 0, 0, 0.75);
 }
@@ -119,7 +127,7 @@ input[type="number"] {
 .NumberOfEvents {
   display: flex;
   flex-direction: row;
-  max-width: 500px;
+  max-width: 600px;
   margin: 20px auto;
   text-align: center;
 }
@@ -133,8 +141,7 @@ input[type="number"] {
 }
 
 .Alert {
-  /* position: fixed;
-  top: 20px; */
+  text-align: left;
 }
 
 .data-vis-wrapper {

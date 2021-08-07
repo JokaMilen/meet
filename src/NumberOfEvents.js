@@ -27,13 +27,19 @@ class NumberOfEvents extends Component {
     const { numberOfEvents } = this.props;
     return (
       <div className="NumberOfEvents">
-        <input
-          type="number"
-          className="number"
-          value={numberOfEvents}
-          onChange={this.handleInputChanged}
-        />
-        <ErrorAlert text={this.state.errorAlertText} />
+        <section>
+          <label htmlFor="number" className="inputLabel">Number of events:</label>
+          <input
+            id="number"
+            type="number"
+            className="number"
+            value={numberOfEvents}
+            onChange={this.handleInputChanged}
+            autoComplete="off"
+          />
+
+          <ErrorAlert text={this.state.errorAlertText} />
+        </section>
       </div>
     );
   }

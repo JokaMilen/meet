@@ -1,4 +1,4 @@
-import React, { PureComponent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red'];
@@ -12,7 +12,7 @@ const EventGenre = ({ events }) => {
       return { name: genre, value }
     })
 
-    return data;
+    return data.filter((record) => record.value > 0);
   }
 
   useEffect(() => { setData(() => getData()); }, [events]);
